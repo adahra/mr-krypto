@@ -1,4 +1,4 @@
-package io.github.adahra.mrkrypto.data.utils;
+package io.github.adahra.mrkrypto.data.utils.image;
 
 import android.graphics.Bitmap;
 import android.graphics.BlurMaskFilter;
@@ -11,8 +11,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
-
-import io.github.adahra.mrkrypto.data.utils.image.ConvolutionMatrix;
 
 /**
  * Created on 12/13/17.
@@ -503,4 +501,6 @@ public class ImageUtils {
 
         return Bitmap.createBitmap(bitmapSource, 0, 0, width, height, matrix, true);
     }
+
+
 }
