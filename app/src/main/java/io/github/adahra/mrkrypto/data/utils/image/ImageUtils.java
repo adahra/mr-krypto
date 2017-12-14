@@ -12,6 +12,8 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
+import java.util.Random;
+
 /**
  * Created on 12/13/17.
  */
@@ -22,6 +24,8 @@ public class ImageUtils {
     public static final int BOOST_BLUE_COLOR_TYPE = 3;
     public static final int FLIP_VERTICAL = 1;
     public static final int FLIP_HORIZONTAL = 2;
+    public static final int COLOR_MIN = 0x00;
+    public static final int COLOR_MAX = 0xFF;
 
     public static Bitmap setHighlightImage(Bitmap bitmapSource) {
         Bitmap bitmapOut = Bitmap.createBitmap(bitmapSource.getWidth() + 96,
@@ -502,5 +506,101 @@ public class ImageUtils {
         return Bitmap.createBitmap(bitmapSource, 0, 0, width, height, matrix, true);
     }
 
+    public static Bitmap setFleaEffect(Bitmap bitmapSource) {
+        int width = bitmapSource.getWidth();
+        int height = bitmapSource.getHeight();
+        int[] pixels = new int[width * height];
+        bitmapSource.getPixels(pixels, 0, width, 0, 0, width, height);
+        Random random = new Random();
+        int index = 0;
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                index = y * width + x;
+                int randomColor = Color.rgb(random.nextInt(COLOR_MAX),
+                        random.nextInt(COLOR_MAX), random.nextInt(COLOR_MAX));
+                pixels[index] |= randomColor;
+            }
+        }
+
+        Bitmap bitmapOut = Bitmap.createBitmap(width, height, bitmapSource.getConfig());
+        bitmapOut.setPixels(pixels, 0, width, 0, 0, width, height);
+        return bitmapOut;
+    }
+
+    public static Bitmap setBlackFilter(Bitmap bitmapSource) {
+        int width = bitmapSource.getWidth();
+        int height = bitmapSource.getHeight();
+        int[] pixels = new int[width * height];
+        bitmapSource.getPixels(pixels, 0, width, 0, 0, width, height);
+        Random random = new Random();
+        int red;
+        int green;
+        int blue;
+        int index = 0;
+        int threshold = 0;
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                index = y * width + x;
+                red = Color.red(pixels[index]);
+                green = Color.green(pixels[index]);
+                blue = Color.blue(pixels[index]);
+                threshold = random.nextInt(COLOR_MAX);
+                if (red < threshold && green < threshold && blue < threshold) {
+                    pixels[index] = Color.rgb(COLOR_MIN, COLOR_MIN, COLOR_MIN);
+                }
+            }
+        }
+
+        Bitmap bitmapOut = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        bitmapOut.setPixels(pixels, 0, width, 0, 0, width, height);
+        return bitmapOut;
+    }
+
+    public static Bitmap setSnowEffect(Bitmap bitmapSource) {
+        int width = bitmapSource.getWidth();
+        int height = bitmapSource.getHeight();
+        int[] pixels = new int[width * height];
+        bitmapSource.getPixels(pixels, 0, width, 0, 0, width, height);
+        Random random = new Random();
+        int red;
+        int green;
+        int blue;
+        int index = 0;
+        int threshold = 50;
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                index = y * width + x;
+                red = Color.red(pixels[index]);
+                green = Color.green(pixels[index]);
+                blue = Color.blue(pixels[index]);
+                threshold = random.nextInt(COLOR_MAX);
+                if (red > threshold && green > threshold && blue > threshold) {
+                    pixels[index] = Color.rgb(COLOR_MAX, COLOR_MAX, COLOR_MAX);
+                }
+            }
+        }
+
+        Bitmap bitmapOut = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+        bitmapOut.setPixels(pixels, 0, width, 0, 0, width, height);
+        return bitmapOut;
+    }
+
+    public static Bitmap setShadingFilter(Bitmap bitmapSource, int shadingColor) {
+        int width = bitmapSource.getWidth();
+        int height = bitmapSource.getHeight();
+        int[] pixels = new int[width * height];
+        bitmapSource.getPixels(pixels, 0, width, 0, 0, width, height);
+        int index = 0;
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                index = y * width + x;
+                pixels[index] &= shadingColor;
+            }
+        }
+
+        Bitmap bitmapOut = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        bitmapOut.setPixels(pixels, 0, width, 0, 0, width, height);
+        return bitmapOut;
+    }
 
 }
