@@ -624,4 +624,27 @@ public class ImageUtils {
         bitmapOut.setPixels(pixels, 0, width, 0, 0, width, height);
         return bitmapOut;
     }
+
+    public static Bitmap setHueFilter(Bitmap bitmapSource, int level) {
+        int width = bitmapSource.getWidth();
+        int height = bitmapSource.getHeight();
+        int[] pixels = new int[width * height];
+        float[] hsv = new float[3];
+        bitmapSource.getPixels(pixels, 0, width, 0, 0, width, height);
+        int index = 0;
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                index = y * width + x;
+                Color.colorToHSV(pixels[index], hsv);
+                hsv[0] += level;
+                hsv[0] = (float) Math.max(0.0, Math.min(hsv[0], 360.0));
+                pixels[index] |= Color.HSVToColor(hsv);
+            }
+        }
+
+        Bitmap bitmapOut = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        bitmapOut.setPixels(pixels, 0, width, 0, 0, width, height);
+        return bitmapOut;
+    }
 }
+
