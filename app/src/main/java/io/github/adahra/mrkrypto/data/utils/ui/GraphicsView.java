@@ -24,19 +24,23 @@ public class GraphicsView extends View {
 
     public GraphicsView(Context context) {
         super(context);
+        initialize();
     }
 
     public GraphicsView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        initialize();
     }
 
     public GraphicsView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        initialize();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public GraphicsView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        initialize();
     }
 
     /**
