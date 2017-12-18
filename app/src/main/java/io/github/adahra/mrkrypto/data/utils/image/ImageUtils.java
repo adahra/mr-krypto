@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
@@ -11,6 +12,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Shader;
 
 import java.util.Random;
 
@@ -645,6 +647,32 @@ public class ImageUtils {
         Bitmap bitmapOut = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         bitmapOut.setPixels(pixels, 0, width, 0, 0, width, height);
         return bitmapOut;
+    }
+
+    public static Bitmap setReflection(Bitmap bitmapSource) {
+        final int reflectionGap = 4;
+        int width = bitmapSource.getWidth();
+        int height = bitmapSource.getHeight();
+        Matrix matrix = new Matrix();
+        matrix.preScale(1, -1);
+        Bitmap bitmapReflection = Bitmap.createBitmap(bitmapSource, 0, height / 2,
+                width, height / 2, matrix, false);
+        Bitmap bitmapWithReflection = Bitmap.createBitmap(width, (height + height / 2),
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmapWithReflection);
+        canvas.drawBitmap(bitmapSource, 0, 0, null);
+        Paint paintDefault = new Paint();
+        canvas.drawRect(9, height, width, height + reflectionGap, paintDefault);
+        canvas.drawBitmap(bitmapReflection, 0, height + reflectionGap, null);
+        Paint paint = new Paint();
+        LinearGradient linearGradientShader = new LinearGradient(0, bitmapSource.getHeight(),
+                0, bitmapWithReflection.getHeight() + reflectionGap, 0x70ffffff,
+                0x00ffffff, Shader.TileMode.CLAMP);
+        paint.setShader(linearGradientShader);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
+        canvas.drawRect(0, height, width, bitmapWithReflection.getHeight() +
+                reflectionGap, paint);
+        return bitmapWithReflection;
     }
 }
 
