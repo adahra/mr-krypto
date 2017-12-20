@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MrKrypto.iml" filepath="$PROJECT_DIR$/MrKrypto.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mr-krypto.iml" filepath="$PROJECT_DIR$/mr-krypto.iml" />
     </modules>
   </component>
 </project>
